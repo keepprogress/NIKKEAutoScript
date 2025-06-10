@@ -331,10 +331,6 @@ class Minitouch(Connection):
 
     @cached_property
     def minitouch_builder(self):
-        # Only initialize minitouch if actually using minitouch control method
-        if hasattr(self, 'config') and self.config.Emulator_ControlMethod != 'minitouch':
-            logger.warning('Attempting to access minitouch_builder when control method is not minitouch')
-            raise MinitouchNotInstalledError('Minitouch not needed for current control method')
         self.minitouch_init()
         return CommandBuilder(self)
 
@@ -421,10 +417,6 @@ class Minitouch(Connection):
 
     @retry
     def click_minitouch(self, x, y):
-        # Guard against calling minitouch when using different control method
-        if hasattr(self, 'config') and self.config.Emulator_ControlMethod != 'minitouch':
-            logger.error('click_minitouch called but control method is not minitouch')
-            raise MinitouchNotInstalledError('Using wrong control method')
         builder = self.minitouch_builder
         builder.down(int(x * 2 * 0.9), int(y / 2 * 1.12)).commit()
         builder.up().commit()
@@ -432,10 +424,6 @@ class Minitouch(Connection):
 
     @retry
     def swipe_minitouch(self, p1, p2):
-        # Guard against calling minitouch when using different control method
-        if hasattr(self, 'config') and self.config.Emulator_ControlMethod != 'minitouch':
-            logger.error('swipe_minitouch called but control method is not minitouch')
-            raise MinitouchNotInstalledError('Using wrong control method')
         points = insert_swipe(p0=translate_tuple(p1), p3=translate_tuple(p2))
         builder = self.minitouch_builder
 

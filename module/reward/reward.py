@@ -16,6 +16,9 @@ class Reward(UI):
         confirm_timer = Timer(1, count=3).start()
         # Set click interval to 0.3, because game can't respond that fast.
         click_timer = Timer(0.3)
+        receive_count = 0
+        max_receive_clicks = 3  # Exit after clicking RECEIVE 3 times
+        
         while 1:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -40,14 +43,36 @@ class Reward(UI):
             if click_timer.reached() and self.appear_then_click(
                     RECEIVE, offset=(30, 30), interval=10
             ):
+                receive_count += 1
+                logger.info(f"Clicked RECEIVE ({receive_count}/{max_receive_clicks})")
                 confirm_timer.reset()
                 click_timer.reset()
+                
+                # Exit after clicking RECEIVE max times
+                if receive_count >= max_receive_clicks:
+                    logger.info(f"Reached maximum RECEIVE clicks ({max_receive_clicks}), assuming rewards collected")
+                    break
                 continue
             
-            if self.appear(EMPTY_CHECK, threshold=1.00):
-                break
+            # Try to detect EMPTY_CHECK but don't rely on it
+            try:
+                if self.appear(EMPTY_CHECK, threshold=1.00):
+                    logger.info("Detected EMPTY_CHECK, no more rewards")
+                    break
+            except:
+                pass
 
-            if self.appear(MAIN_CHECK, offset=(10, 10)) and confirm_timer.reached():
+            # Also check for MAIN_CHECK as a fallback
+            try:
+                if self.appear(MAIN_CHECK, offset=(10, 10)) and confirm_timer.reached():
+                    logger.info("Back at main screen, rewards collection complete")
+                    break
+            except:
+                pass
+                
+            # Additional timeout check - if we haven't clicked anything for a while
+            if confirm_timer.reached() and receive_count > 0:
+                logger.info("Timeout reached after collecting rewards")
                 break
 
         logger.info("Defence Reward have been received")
@@ -148,7 +173,10 @@ class Reward(UI):
                 break
 
             if click_timer.reached():
-                self.device.click_minitouch(100, 100)
+                # Click back button area (top-left corner)
+                from module.base.button import Button
+                back_button = Button(area=(50, 50, 150, 150), color=(0, 0, 0), button=(50, 50, 150, 150))
+                self.device.click(back_button)
                 click_timer.reset()
 
     def temporary(self, button, skip_first_screenshot=True):
