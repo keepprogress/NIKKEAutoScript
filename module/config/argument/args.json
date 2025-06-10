@@ -18,14 +18,16 @@
         "type": "select",
         "value": "DroidCast",
         "option": [
-          "DroidCast"
+          "DroidCast",
+          "ADB"
         ]
       },
       "ControlMethod": {
         "type": "select",
         "value": "minitouch",
         "option": [
-          "minitouch"
+          "minitouch",
+          "ADB"
         ]
       },
       "AdbRestart": {

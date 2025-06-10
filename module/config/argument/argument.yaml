@@ -20,10 +20,10 @@ Emulator:
     option: [ com_proximabeta_nikke, com_gamamobi_nikke, ]
   ScreenshotMethod:
     value: DroidCast
-    option: [ DroidCast, ]
+    option: [ DroidCast, ADB, ]
   ControlMethod:
     value: minitouch
-    option: [ minitouch, ]
+    option: [ minitouch, ADB, ]
   AdbRestart: false
   ScreenshotInterval: 0.5
 Optimization:

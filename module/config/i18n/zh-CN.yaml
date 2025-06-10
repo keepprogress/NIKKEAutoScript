@@ -137,10 +137,12 @@ Emulator:
     name: 模拟器截图方案
     help: ""
     DroidCast: DroidCast
+    ADB: ADB
   ControlMethod:
     name: 模拟器控制方案
     help: ""
     minitouch: minitouch
+    ADB: ADB
   AdbRestart:
     name: 在检测不到设备的时候尝试重启adb
     help: ""

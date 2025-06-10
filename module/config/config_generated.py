@@ -20,8 +20,8 @@ class GeneratedConfig:
     # Group `Emulator`
     Emulator_Serial = 'auto'
     Emulator_PackageName = 'com_proximabeta_nikke'  # com_proximabeta_nikke, com_gamamobi_nikke
-    Emulator_ScreenshotMethod = 'DroidCast'  # DroidCast
-    Emulator_ControlMethod = 'minitouch'  # minitouch
+    Emulator_ScreenshotMethod = 'DroidCast'  # DroidCast, ADB
+    Emulator_ControlMethod = 'minitouch'  # minitouch, ADB
     Emulator_AdbRestart = False
     Emulator_ScreenshotInterval = 0.5
 

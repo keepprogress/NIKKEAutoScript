@@ -5,10 +5,16 @@ import numpy as np
 from module.base.button import Button
 from module.base.utils import ensure_int, point2str
 from module.device.method.minitouch import Minitouch
+from module.device.method.adb_input import AdbInput
 from module.logger import logger
 
 
-class Control(Minitouch):
+class ControlMultiInheritance(Minitouch, AdbInput):
+    """Multiple inheritance to get all control methods"""
+    pass
+
+
+class Control(ControlMultiInheritance):
     def handle_control_check(self, button):
         # Will be overridden in Device
         pass
@@ -17,6 +23,7 @@ class Control(Minitouch):
     def click_methods(self):
         return {
             'minitouch': self.click_minitouch,
+            'ADB': self.click_adb,
         }
 
     def click(self, button: Button, control_check=True):
@@ -45,8 +52,7 @@ class Control(Minitouch):
             self.handle_control_check(name)
         p1, p2 = ensure_int(p1, p2)
         method = self.config.Emulator_ControlMethod
-        if method == 'minitouch':
-            logger.info('%s %s -> %s' % (label, point2str(*p1), point2str(*p2)))
+        logger.info('%s %s -> %s' % (label, point2str(*p1), point2str(*p2)))
 
         if distance_check:
             if np.linalg.norm(np.subtract(p1, p2)) < 10:
@@ -57,3 +63,5 @@ class Control(Minitouch):
 
         if method == 'minitouch':
             self.swipe_minitouch(p1, p2)
+        elif method == 'ADB':
+            self.swipe_adb(p1, p2)
