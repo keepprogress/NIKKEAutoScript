@@ -140,7 +140,7 @@ class AdbInput(Connection):
     @retry
     def app_start_adb(self, package_name=None):
         """
-        Start app using monkey command (works without knowing the main activity).
+        Start app using am start command with MainActivity.
         
         Args:
             package_name (str): Package name to start
@@ -148,12 +148,19 @@ class AdbInput(Connection):
         if not package_name:
             package_name = self.package
             
-        # Use monkey to launch the app (it finds the main activity automatically)
-        cmd = ['monkey', '-p', package_name, '-c', 'android.intent.category.LAUNCHER', '1']
+        # Use am start to launch the MainActivity
+        cmd = ['am', 'start', '-n', f'{package_name}/com.shiftup.nk.MainActivity']
         result = self.adb_shell(cmd)
         
         # Small delay to let the app start
-        time.sleep(2)
+        time.sleep(1)
+        
+        # Click at (250, 615) to handle any initial screen
+        logger.info('Clicking initial screen at (250, 615)')
+        self.click_adb(250, 615)
+        
+        # Additional delay after click
+        time.sleep(1)
         
         # Verify the app started
         current = self.app_current_adb()
