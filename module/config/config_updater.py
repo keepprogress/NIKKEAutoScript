@@ -266,6 +266,21 @@ class ConfigUpdater:
 
         for path, _ in deep_iter(self.args, depth=3):
             deep_load(path)
+            
+        # Preserve custom fields that are not in args
+        # Specifically preserve our custom emulator settings
+        if 'NKAS' in old and 'Emulator' in old['NKAS']:
+            emulator_old = old['NKAS']['Emulator']
+            emulator_new = new.get('NKAS', {}).get('Emulator', {})
+            
+            # Preserve custom fields like AppStartClickX, AppStartClickY, ScheduleOffset
+            for key in ['AppStartClickX', 'AppStartClickY', 'ScheduleOffset']:
+                if key in emulator_old and key not in emulator_new:
+                    if 'NKAS' not in new:
+                        new['NKAS'] = {}
+                    if 'Emulator' not in new['NKAS']:
+                        new['NKAS']['Emulator'] = {}
+                    new['NKAS']['Emulator'][key] = emulator_old[key]
 
         return new
 

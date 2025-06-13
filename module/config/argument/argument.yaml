@@ -26,6 +26,16 @@ Emulator:
     option: [ minitouch, ADB, ]
   AdbRestart: false
   ScreenshotInterval: 0.5
+  AppStartClickX:
+    value: 250
+    valuetype: int
+  AppStartClickY:
+    value: 615
+    valuetype: int
+  ScheduleOffset:
+    value: 0
+    valuetype: int
+    help: "Hours to offset task scheduling (e.g., 1 for User 2)"
 Optimization:
   WhenTaskQueueEmpty:
     value: goto_main

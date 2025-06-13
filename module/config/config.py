@@ -320,7 +320,9 @@ class NikkeConfig(ConfigUpdater, ManualConfig, GeneratedConfig, ConfigWatcher):
         if server_update is not None:
             if server_update is True:
                 server_update = self.Scheduler_ServerUpdate
-            run.append(get_server_next_update(server_update))
+            # Get schedule offset from config for multi-user support
+            schedule_offset = getattr(self, 'Emulator_ScheduleOffset', 0)
+            run.append(get_server_next_update(server_update, schedule_offset))
         if target is not None:
             target = [target] if not isinstance(target, list) else target
             target = nearest_future(target)

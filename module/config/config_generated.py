@@ -24,6 +24,9 @@ class GeneratedConfig:
     Emulator_ControlMethod = 'minitouch'  # minitouch, ADB
     Emulator_AdbRestart = False
     Emulator_ScreenshotInterval = 0.5
+    Emulator_AppStartClickX = 250
+    Emulator_AppStartClickY = 615
+    Emulator_ScheduleOffset = 0
 
     # Group `Optimization`
     Optimization_WhenTaskQueueEmpty = 'goto_main'  # stay_there, goto_main, close_game

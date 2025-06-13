@@ -292,10 +292,11 @@ def server_time_offset() -> timedelta:
     return datetime.now(timezone.utc).astimezone().utcoffset() - server_timezone()
 
 
-def get_server_next_update(daily_trigger):
+def get_server_next_update(daily_trigger, schedule_offset=0):
     """
     Args:
         daily_trigger (list[str], str): [ "00:00", "12:00", "18:00",]
+        schedule_offset (int): Hours to offset the schedule (for multi-user support)
 
     Returns:
         datetime.datetime
@@ -319,6 +320,8 @@ def get_server_next_update(daily_trigger):
         '''
         s = (future - local_now).total_seconds() % 86400
         future = local_now + timedelta(seconds=s)
+        # Apply schedule offset for multi-user support
+        future = future + timedelta(hours=schedule_offset)
         trigger.append(future)
     update = sorted(trigger)[0]
     return update

@@ -155,9 +155,11 @@ class AdbInput(Connection):
         # Small delay to let the app start
         time.sleep(1)
         
-        # Click at (250, 615) to handle any initial screen
-        logger.info('Clicking initial screen at (250, 615)')
-        self.click_adb(250, 615)
+        # Click at configured coordinates to handle any initial screen
+        click_x = getattr(self.config, 'Emulator_AppStartClickX', 250)
+        click_y = getattr(self.config, 'Emulator_AppStartClickY', 615)
+        logger.info(f'Clicking initial screen at ({click_x}, {click_y})')
+        self.click_adb(click_x, click_y)
         
         # Additional delay after click
         time.sleep(1)
