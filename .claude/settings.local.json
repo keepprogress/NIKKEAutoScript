@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(grep:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "mcp__mcp-obsidian__obsidian_append_content"
     ],
     "deny": []
   }
